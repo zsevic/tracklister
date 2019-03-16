@@ -8,14 +8,25 @@ class App extends Component {
 
     this.state = {
       tracklist: [],
-      url: 'pozz'
+      url: ''
     }
   }
 
+  changeUrl = e => {
+    e.preventDefault()
+
+    this.setState({ url: e.target.value })
+  }
+
   getTracklist = async () => {
-    const tracklist = await axios('http://localhost:8080/tracklist')
-    const { data } = tracklist
-    console.log(data)
+    const tracklist = await axios({
+      method: 'post',
+      url: 'http://localhost:8080/tracklist',
+      data: {
+        url: this.state.url
+      }
+    })
+    console.log(tracklist)
   }
 
   render () {
@@ -33,7 +44,7 @@ class App extends Component {
                 name='url'
                 id='url'
                 placeholder='Insert YouTube url'
-                value={this.state.url}
+                onChange={this.changeUrl}
               />
             </FormGroup>
             <Button onClick={this.getTracklist}>Submit</Button>
