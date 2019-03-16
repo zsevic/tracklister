@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Input, Jumbotron } from 'reactstrap'
+import { Button, Form, FormGroup, Input, Jumbotron, Spinner } from 'reactstrap'
 import axios from 'axios'
 
 class App extends Component {
@@ -7,6 +7,7 @@ class App extends Component {
     super(props)
 
     this.state = {
+      loading: false,
       tracklist: [],
       url: ''
     }
@@ -19,6 +20,8 @@ class App extends Component {
   }
 
   getTracklist = async () => {
+    this.setState({ loading: true })
+
     const tracklist = await axios({
       method: 'post',
       url: 'http://localhost:8080/tracklist',
@@ -27,9 +30,13 @@ class App extends Component {
       }
     })
     console.log(tracklist)
+
+    this.setState({ loading: false })
   }
 
   render () {
+    const { loading } = this.state
+
     return (
       <div>
         <Jumbotron>
@@ -48,6 +55,8 @@ class App extends Component {
               />
             </FormGroup>
             <Button onClick={this.getTracklist}>Submit</Button>
+
+            {loading ? <Spinner /> : 'tracklist'}
           </Form>
         </Jumbotron>
       </div>
