@@ -8,7 +8,7 @@ class App extends Component {
 
     this.state = {
       loading: false,
-      tracklist: [],
+      tracklist: '',
       url: ''
     }
   }
@@ -22,14 +22,25 @@ class App extends Component {
   getTracklist = async () => {
     this.setState({ loading: true })
 
-    const tracklist = await axios({
+    let tracklist = await axios({
       method: 'post',
       url: 'http://localhost:8080/tracklist',
       data: {
         url: this.state.url
       }
     })
-    console.log(tracklist)
+
+    if (tracklist.data.err) {
+      this.setState({ tracklist: tracklist.data.err })
+    } else {
+      tracklist = tracklist.data.tracklist
+      if (Array.isArray(tracklist)) {
+        tracklist = tracklist
+          .map(track => `${track.artist} - ${track.name}`)
+          .join(', ')
+      }
+      this.setState({ tracklist })
+    }
 
     this.setState({ loading: false })
   }
@@ -55,12 +66,19 @@ class App extends Component {
               />
             </FormGroup>
             <Button onClick={this.getTracklist}>Submit</Button>
-
-            {loading ? <Spinner /> : 'tracklist'}
           </Form>
+          <div>
+            {loading ? <Spinner /> : <Tracklist list={this.state.tracklist} />}
+          </div>
         </Jumbotron>
       </div>
     )
+  }
+}
+
+class Tracklist extends Component {
+  render () {
+    return <div>{this.props.list}</div>
   }
 }
 
