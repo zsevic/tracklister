@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Input, Jumbotron, Spinner } from 'reactstrap'
 import axios from 'axios'
+import validator from 'validator'
 
 class App extends Component {
   constructor (props) {
@@ -20,7 +21,12 @@ class App extends Component {
   }
 
   getTracklist = async () => {
-    this.setState({ loading: true })
+    if (!validator.isURL(this.state.url)) {
+      this.setState({ tracklist: 'Url is not valid' })
+      return
+    }
+
+    this.setState({ loading: true, tracklist: '' })
 
     let tracklist = await axios({
       method: 'post',
