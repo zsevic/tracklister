@@ -30,7 +30,7 @@ class App extends Component {
 
     let tracklist = await axios({
       method: 'post',
-      url: 'http://localhost:8080/tracklist',
+      url: 'https://tracklister.herokuapp.com/tracklist',
       data: {
         url: this.state.url
       }
