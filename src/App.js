@@ -57,13 +57,13 @@ class App extends Component {
     const { loading } = this.state
 
     return (
-      <div>
-        <Jumbotron>
-          <h1 className='display-3'>Tracklister</h1>
-          <p className='lead'>Find tracks from your favorite music set</p>
+      <div style={{display: 'flex', justifyContent: 'center'}}>
+        <Jumbotron style={{'min-height': '85vh', 'min-width': '50vw'}}>
+          <h1 className='text-center'>Tracklister</h1>
+          <p className='lead text-center'>Find tracks from your favorite music set</p>
           <hr className='my-2' />
 
-          <Form inline>
+          <Form style={{display:'flex', justifyContent: 'center'}}>
             <FormGroup className='mb-2 mr-sm-2 mb-sm-0'>
               <Input
                 type='url'
@@ -76,7 +76,7 @@ class App extends Component {
             <Button onClick={this.getTracklist}>Submit</Button>
           </Form>
           <div>
-            {this.state.error}
+            <p className='text-center'>{this.state.error}</p>
             {loading ? <Spinner /> : <Tracklist list={this.state.tracklist} />}
           </div>
         </Jumbotron>
