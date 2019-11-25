@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "a20f64f796ecbf917515",
-    "url": "/tracklister/static/js/main.7d63053e.chunk.js"
+    "revision": "778e8a0af4c7138929e7",
+    "url": "/tracklister/static/js/main.0193437a.chunk.js"
   },
   {
     "revision": "aaa68e2fa84b773691a4",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/tracklister/static/js/2.94f47871.chunk.js"
   },
   {
-    "revision": "7801a1560ccebc233463a2ef8e626e69",
+    "revision": "ffe8784f2808a2de999770850d720589",
     "url": "/tracklister/index.html"
   }
 ];
