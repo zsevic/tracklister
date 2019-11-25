@@ -9,6 +9,7 @@ See demo: [https://sevic.me/tracklister](https://sevic.me/tracklister)
 ```bash
 git clone https://github.com/zsevic/tracklister
 cd tracklister
+cp .env.sample .env # change values after copying
 yarn
 yarn start
 ```

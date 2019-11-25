@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Input, Jumbotron, Spinner } from 'reactstrap'
+import { Button, Form, FormGroup, Input, 
+  Jumbotron, ListGroup, ListGroupItem, Spinner, 
+} from 'reactstrap'
 import axios from 'axios'
 import validator from 'validator'
 
@@ -10,7 +12,8 @@ class App extends Component {
     this.state = {
       loading: false,
       tracklist: '',
-      url: ''
+      url: '',
+      error: '',
     }
   }
 
@@ -21,31 +24,30 @@ class App extends Component {
   }
 
   getTracklist = async () => {
+    this.setState({ error: '' })
     if (!validator.isURL(this.state.url)) {
-      this.setState({ tracklist: 'Url is not valid' })
+      this.setState({ error: 'Url is not valid', tracklist: [] })
       return
     }
 
-    this.setState({ loading: true, tracklist: '' })
+    this.setState({ loading: true, tracklist: [] })
 
     let tracklist = await axios({
       method: 'post',
-      url: 'https://tracklister.herokuapp.com/tracklist',
+      url: `${process.env.REACT_APP_BASE_URL}/tracklist`,
       data: {
         url: this.state.url
       }
     })
 
     if (tracklist.data.err) {
-      this.setState({ tracklist: tracklist.data.err })
+      this.setState({ error: tracklist.data.err })
     } else {
-      tracklist = tracklist.data.tracklist
+      tracklist = tracklist.data
+      console.log(tracklist)
       if (Array.isArray(tracklist)) {
-        tracklist = tracklist
-          .map(track => `${track.artist} - ${track.name}`)
-          .join(', ')
+        this.setState({ tracklist, error: '' })
       }
-      this.setState({ tracklist })
     }
 
     this.setState({ loading: false })
@@ -74,6 +76,7 @@ class App extends Component {
             <Button onClick={this.getTracklist}>Submit</Button>
           </Form>
           <div>
+            {this.state.error}
             {loading ? <Spinner /> : <Tracklist list={this.state.tracklist} />}
           </div>
         </Jumbotron>
@@ -84,7 +87,13 @@ class App extends Component {
 
 class Tracklist extends Component {
   render () {
-    return <div>{this.props.list}</div>
+    return <ListGroup>
+      {this.props.list && this.props.list.map(track => <ListGroupItem>
+        <a href={track.link ? track.link : '#'} target='_blank' rel='noopener noreferrer'> 
+          {track.artist} - {track.name}
+        </a>
+        </ListGroupItem>)}
+      </ListGroup>
   }
 }
 
