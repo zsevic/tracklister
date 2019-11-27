@@ -26,27 +26,27 @@ class App extends Component {
   getTracklist = async () => {
     this.setState({ error: '' })
     if (!validator.isURL(this.state.url)) {
-      this.setState({ error: 'Url is not valid', tracklist: [] })
+      this.setState({ error: 'Url is not valid', tracklist: [], loading: false })
       return
     }
 
     this.setState({ loading: true, tracklist: [] })
 
     let tracklist = await axios({
-      method: 'post',
+      method: 'get',
       url: `${process.env.REACT_APP_BASE_URL}/tracklist`,
-      data: {
+      params: {
         url: this.state.url
       }
     })
 
     if (tracklist.data.err) {
-      this.setState({ error: tracklist.data.err })
+      this.setState({ error: tracklist.data.err, loading: false })
     } else {
       tracklist = tracklist.data
-      console.log(tracklist)
+
       if (Array.isArray(tracklist)) {
-        this.setState({ tracklist, error: '' })
+        this.setState({ tracklist, error: '', loading: false })
       }
     }
 
@@ -58,7 +58,7 @@ class App extends Component {
 
     return (
       <div style={{display: 'flex', justifyContent: 'center'}}>
-        <Jumbotron style={{'min-height': '85vh', 'min-width': '50vw'}}>
+        <Jumbotron style={{minHeight: '85vh', minWidth: '50vw'}}>
           <h1 className='text-center'>Tracklister</h1>
           <p className='lead text-center'>Find tracks from your favorite music set</p>
           <hr className='my-2' />
