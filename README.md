@@ -2,7 +2,7 @@
 
 > Find tracks from your favorite music set
 
-See demo: [https://sevic.me/tracklister](https://sevic.me/tracklister)
+See demo: [https://sevic.dev/tracklister](https://sevic.dev/tracklister)
 
 ### :wrench: Setup
 
